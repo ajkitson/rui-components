@@ -1,0 +1,27 @@
+{
+  "name": "rui-components",
+  "version": "0.0.0",
+  "homepage": "https://github.com/100health/rui-components",
+  "authors": [
+    "TC <tc@redoxengine.com> James <james@redoxengine.com>"
+  ],
+  "main": "dst/redox-ui-components.js",
+  "keywords": [
+    "ui",
+    "components",
+    "directives",
+    "angular",
+    "1.3"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.3"
+  }
+}
