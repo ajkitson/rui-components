@@ -63,9 +63,11 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "  </div>\n" +
     "\t<div>\n" +
     "\t\t<h2>Help Text</h2>\n" +
-    "\t\t<label rui-helptext message=\"This is the help text sample text for helping with the text of samples.\" style=\"font-size:20px;\">Chya</label>\n" +
+    "\t\t<label rui-helptext message=\"This is the help text sample text for helping with the text of samples.\" style=\"font-size:30px;\">Chya</label>\n" +
     "    <br/>\n" +
     "\t\t<label rui-helptext data=\"helptextdata\" style=\"font-size:20px;\">Chya</label>\n" +
+    "    <br>\n" +
+    "    <label rui-helptext data=\"helptextdata\" style=\"font-size:40px;\">Chaa</label>\n" +
     "\t</div>\n" +
     "</div>\n"
   );
