@@ -1,11 +1,11 @@
 {
   "name": "rui-components",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "homepage": "https://github.com/100health/rui-components",
   "authors": [
-    "TC <tc@redoxengine.com> James <james@redoxengine.com>"
+    "TC <tc@redoxengine.com>", "James <james@redoxengine.com>", "Andy <andy@redoxengine.com>"
   ],
-  "main": "dst/redox-ui-components.js",
+  "main": ["dst/redox-ui-components.min.js", "dst/styles/main.min.css"],
   "keywords": [
     "ui",
     "components",
@@ -24,5 +24,6 @@
   "dependencies": {
     "angular": "1.3",
     "ionicons": "~1.5.2"
-  }
+  },
+  "description": "UI Components based on Redox Engine"
 }
