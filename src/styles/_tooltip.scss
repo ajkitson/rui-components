@@ -1,16 +1,17 @@
 .rui-tooltip{
-  position: relative;
+  position: absolute;
+  display: block;
   width: 300px;
-  bottom: 94px;
-  left: -24px;
+  bottom: 32px;
+  left: -20px;
   padding: 8px;
-  margin: 1em 0 1em;
   border: 1px solid $green;
   color: $darkgrey;
   background: $white;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+  font-size: 14px;
 }
 .rui-tooltip::before{
   content: "";
