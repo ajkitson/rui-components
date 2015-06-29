@@ -1,0 +1,29 @@
+// VARIABLES //
+
+// Sizing
+$header-height: 42px;
+$footer-height: 40px;
+$viewport-minus-header-footer: calc(100vh - 160px);
+$sidenav-width: 225px;
+// Screen sized
+$break-small: 768px;
+$break-medium: 992px;
+$break-large: 1199px;
+
+// Colors
+$black: #000000;
+$white: #FFFFFF;
+$verydarkgrey: #333338;
+$darkgrey: #43434a;
+$grey: #7c7c81;
+$lightgrey: #dbd9d6;
+$verylightgrey: #e6e4e2;
+$superlightgrey: #F9F8F7;
+$darkgreen: #008262;
+$green: #00b588;
+$lightgreen: #B7FFE0;
+$superlightgreen: #f9fffd;
+$orange: #dc5034;
+$lightorange: #f49888;
+$blue: #ff0000;
+$lightblue: #cc0000;
