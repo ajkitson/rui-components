@@ -9,7 +9,7 @@ app.directive('ruiAlert', [function () {
       message: '=', // REQUIRED
       title: '=',
       type: '=',    // 'danger' (default), 'warning', 'info', 'success'
-      showContact: '=', //
+      showContact: '=',
     }
   };
 }]);

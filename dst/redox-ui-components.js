@@ -1,11 +1,33 @@
 angular.module('ruiComponents', []);
 
-angular.module('ruiComponents').controller('ruiAppController', ['$scope', function($scope){
-  $scope.helptextdata="data from controller";
+angular.module('ruiComponents')
+  .controller('ruiAppController', ['$scope', function($scope){
+    $scope.helptextdata="data from controller";
 
+    var counter = 0; // counter shows we're displaying most recent alert message in directive
+    $scope.toggleAlert = function () {
+      $scope.alert = $scope.alert
+        ? null
+        : { title: 'OMG', message: 'tragic alert ' + counter++ };
+    };
 
+  }]);
+
+var app = angular.module('ruiComponents');
+
+app.directive('ruiAlert', [function () {
+
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/alert.html',
+    scope: {
+      message: '=', // REQUIRED
+      title: '=',
+      type: '=',    // 'danger' (default), 'warning', 'info', 'success'
+      showContact: '=', //
+    }
+  };
 }]);
-
 var app = angular.module('ruiComponents');
 
 app.directive('ruiComponents', function () {
@@ -69,6 +91,24 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "    <br>\n" +
     "    <label rui-helptext data=\"helptextdata\" style=\"font-size:40px;\">Chaa</label>\n" +
     "\t</div>\n" +
+    "  <button ng-click=\"toggleAlert()\">Toggle Alert</button>\n" +
+    "  <rui-alert title=\"alert.title\" message=\"alert.message\"></rui-alert>\n" +
+    "  <rui-alert title=\"alert.title\"\n" +
+    "             message=\"alert.message\"\n" +
+    "             type=\"'info'\"\n" +
+    "             show-contact=\"true\">\n" +
+    "  </rui-alert>\n" +
+    "</div>\n"
+  );
+
+
+  $templateCache.put('templates/alert.html',
+    "<div ng-show=\"message\" ng-class=\"'rui-alert rui-alert-' + (type || 'danger')\">\n" +
+    "  <h4 ng-show=\"title\">{{ title }}</h4>\n" +
+    "  <p>{{ message }}</p>\n" +
+    "  <p ng-if=\"showContact\">\n" +
+    "    Need more help? Let us know at <a href=\"mailto:support@RedoxEngine.com\">support@RedoxEngine.com</a>.\n" +
+    "  </p>\n" +
     "</div>\n"
   );
 
