@@ -1,0 +1,7 @@
+<div ng-show="message" ng-class="'rui-alert rui-alert-' + (type || 'danger')">
+  <h4 ng-show="title">{{ title }}</h4>
+  <p>{{ message }}</p>
+  <p ng-if="showContact">
+    Need more help? Let us know at <a class="rui-alert-link" href="mailto:support@RedoxEngine.com">support@RedoxEngine.com</a>.
+  </p>
+</div>

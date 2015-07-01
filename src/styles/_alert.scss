@@ -1,0 +1,66 @@
+//Copied from Bootstrap v3.3.5
+
+.rui-alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.rui-alert h4 {
+  margin-top: 0;
+  color: inherit;
+}
+.rui-alert .rui-alert-link {
+  font-weight: bold;
+}
+.rui-alert > p,
+.rui-alert > ul {
+  margin: 0;
+}
+.rui-alert > p + p {
+  margin-top: 5px;
+}
+.rui-alert-dismissable,
+.rui-alert-dismissible {
+  padding-right: 35px;
+}
+.rui-alert-dismissable .close,
+.rui-alert-dismissible .close {
+  position: relative;
+  top: -2px;
+  right: -21px;
+  color: inherit;
+}
+.rui-alert-success {
+  color: $alert-success-text;
+  background-color: $alert-success-background;
+  border-color: $alert-success-border;
+}
+
+.rui-alert-success .rui-alert-link {
+  color: $alert-success-link;
+}
+.rui-alert-info {
+  color: $alert-info-text;
+  background-color: $alert-info-background;
+  border-color: $alert-info-border;
+}
+.rui-alert-info .rui-alert-link {
+  color: $alert-info-link;
+}
+.rui-alert-warning {
+  color: $alert-warning-text;
+  background-color: $alert-warning-background;
+  border-color: $alert-warning-border;
+}
+.rui-alert-warning .rui-alert-link {
+  color: $alert-warning-link;
+}
+.rui-alert-danger {
+  color: $alert-danger-text;
+  background-color: $alert-danger-background;
+  border-color: $alert-danger-border;
+}
+.rui-alert-danger .rui-alert-link {
+  color: $alert-danger-link;
+}

@@ -13,4 +13,13 @@
     <br>
     <label rui-helptext data="helptextdata" style="font-size:40px;">Chaa</label>
 	</div>
+  <button ng-click="toggleAlert()">Toggle Alert</button>
+  <rui-alert message="alert.message"></rui-alert>
+  <div ng-repeat="type in ['info', 'warning', 'danger', 'success']">
+    <rui-alert title="alert.title"
+               message="alert.message"
+               type="type"
+               show-contact="true">
+    </rui-alert>
+  </div>
 </div>
