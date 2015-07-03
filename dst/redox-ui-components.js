@@ -2,13 +2,51 @@ angular.module('ruiComponents', []);
 
 angular.module('ruiComponents')
   .controller('ruiAppController', ['$scope', function($scope){
+
+    // Help Text
     $scope.helptextdata="data from controller";
 
+    // Alert
     var counter = 0; // counter shows we're displaying most recent alert message in directive
     $scope.toggleAlert = function () {
       $scope.alert = $scope.alert
         ? null
         : { title: 'OMG', message: 'tragic alert ' + counter++ };
+    };
+
+    // Chips
+    $scope.tags = [
+      { name: 'one', color: 'orange' },
+      { name: 'two', color: 'rgb(0, 100, 200)' },
+      { name: 'three', color: '#44FF99' }
+    ];
+
+    $scope.removeTag = function (tag, tagIx) {
+      if (tagIx !== -1) {
+        $scope.tags.splice(tagIx, 1);
+      }
+      // save change to server
+      // ...
+    };
+
+    var randomColor = function () {
+      var rand256 = function () {
+        return Math.floor(Math.random() * 256);
+      };
+
+      return 'rgb(' + [
+        rand256(),
+        rand256(),
+        rand256()
+      ].join(',') + ')';
+    };
+
+    var autoTagCnt = 0;
+    $scope.addTag = function () {
+      $scope.tags.push({
+        name: 'autoTag' + autoTagCnt++,
+        color: randomColor()
+      });
     };
 
   }]);
@@ -24,7 +62,7 @@ app.directive('ruiAlert', [function () {
       message: '=', // REQUIRED
       title: '=',
       type: '=',    // 'danger' (default), 'warning', 'info', 'success'
-      showContact: '=', //
+      showContact: '=',
     }
   };
 }]);
@@ -52,6 +90,20 @@ app.directive('ruiButton', function () {
 	};
 });
 
+var app = angular.module('ruiComponents');
+
+app.directive('ruiChip', [function () {
+
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/chip.html',
+    scope: {
+      name: '=',
+      color: '=',
+      onRemove: '&',
+    }
+  };
+}]);
 var app = angular.module('ruiComponents');
 
 app.directive('ruiHelptext', ['$compile', function ($compile) {
@@ -92,12 +144,22 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "    <label rui-helptext data=\"helptextdata\" style=\"font-size:40px;\">Chaa</label>\n" +
     "\t</div>\n" +
     "  <button ng-click=\"toggleAlert()\">Toggle Alert</button>\n" +
-    "  <rui-alert title=\"alert.title\" message=\"alert.message\"></rui-alert>\n" +
-    "  <rui-alert title=\"alert.title\"\n" +
-    "             message=\"alert.message\"\n" +
-    "             type=\"'info'\"\n" +
-    "             show-contact=\"true\">\n" +
-    "  </rui-alert>\n" +
+    "  <rui-alert message=\"alert.message\"></rui-alert>\n" +
+    "  <div ng-repeat=\"type in ['info', 'warning', 'danger', 'success']\">\n" +
+    "    <rui-alert title=\"alert.title\"\n" +
+    "               message=\"alert.message\"\n" +
+    "               type=\"type\"\n" +
+    "               show-contact=\"true\">\n" +
+    "    </rui-alert>\n" +
+    "  </div>\n" +
+    "  <button ng-click=\"addTag()\">Add Tag</button>\n" +
+    "  <div>\n" +
+    "    <rui-chip ng-repeat=\"tag in tags\"\n" +
+    "              name=\"tag.name\"\n" +
+    "              color=\"tag.color\"\n" +
+    "              on-remove=\"removeTag(tag, $index)\">\n" +
+    "    </rui-chip>\n" +
+    "  </div>\n" +
     "</div>\n"
   );
 
@@ -107,7 +169,7 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "  <h4 ng-show=\"title\">{{ title }}</h4>\n" +
     "  <p>{{ message }}</p>\n" +
     "  <p ng-if=\"showContact\">\n" +
-    "    Need more help? Let us know at <a href=\"mailto:support@RedoxEngine.com\">support@RedoxEngine.com</a>.\n" +
+    "    Need more help? Let us know at <a class=\"rui-alert-link\" href=\"mailto:support@RedoxEngine.com\">support@RedoxEngine.com</a>.\n" +
     "  </p>\n" +
     "</div>\n"
   );
@@ -123,6 +185,16 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
 
   $templateCache.put('templates/card.html',
     ""
+  );
+
+
+  $templateCache.put('templates/chip.html',
+    "<div class=\"rui-chip\" ng-style=\"{'background-color':'{{color}}'}\">\n" +
+    "  <span>{{name}}</span>\n" +
+    "  <button type=\"button\" class=\"rui-close\" aria-label=\"Remove Tag\" ng-click=\"onRemove()\">\n" +
+    "    <span aria-hidden=\"true\">&times;</span>\n" +
+    "  </button>\n" +
+    "</div>\n"
   );
 
 

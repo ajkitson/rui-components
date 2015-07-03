@@ -22,4 +22,12 @@
                show-contact="true">
     </rui-alert>
   </div>
+  <button ng-click="addTag()">Add Tag</button>
+  <div>
+    <rui-chip ng-repeat="tag in tags"
+              name="tag.name"
+              color="tag.color"
+              on-remove="removeTag(tag, $index)">
+    </rui-chip>
+  </div>
 </div>
