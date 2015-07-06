@@ -13,6 +13,7 @@
     <br>
     <label rui-helptext data="helptextdata" style="font-size:40px;">Chaa</label>
 	</div>
+  <h2>Alerts</h2>
   <button ng-click="toggleAlert()">Toggle Alert</button>
   <rui-alert message="alert.message"></rui-alert>
   <div ng-repeat="type in ['info', 'warning', 'danger', 'success']">
@@ -22,6 +23,7 @@
                show-contact="true">
     </rui-alert>
   </div>
+  <h2>Tags</h2>
   <button ng-click="addTag()">Add Tag</button>
   <div>
     <rui-chip ng-repeat="tag in tags"
@@ -30,4 +32,39 @@
               on-remove="removeTag(tag, $index)">
     </rui-chip>
   </div>
+  <h2>Toggles</h2>
+  <form name="toggleTestForm" ng-submit="logToggle()" novalidate>
+    <div>
+      <label>Disable next toggle?</label>
+      <input rui-toggle
+             type="checkbox"
+             id="toggle1"
+             name="toggle1"
+             ng-model="toggle1"
+             ng-change="incrementToggleCount()"
+             />
+      Toggle1: {{toggle1}}
+
+    </div>
+    <div>
+      <label>Test toggle 2: </label>
+      <input rui-toggle
+             type="checkbox"
+             id="toggle2"
+             name="toggle2"
+             ng-model="toggle2"
+             on-text="on"
+             off-text="off"
+             ng-disabled="toggle1"
+             ng-true-value="'on'"
+             ng-false-value="'off'"
+             ng-change="incrementToggleCount()"
+             />
+      Toggle2: {{toggle2}}
+    </div>
+    Overall count: {{toggleCount}}
+    <input type="submit" value="submit"/>
+
+  </form>
+
 </div>

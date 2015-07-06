@@ -1,0 +1,64 @@
+.rui-toggle{
+  margin: 3px 0;
+  vertical-align: top;
+  display: inline-block;
+  height: 24px;
+
+  input{
+    width: 0;
+    height: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+  }
+  input:checked+label{
+    background: $green;
+  }
+  input:checked+label:before {
+    -webkit-transform: translate(76px,0);
+    transform: translate(76px,0);
+  }
+  input:checked+label:after {
+    content: attr(data-on);
+    left: 0;
+    right: 16px;
+  }
+  label{
+    display: inline-block;
+    width: 100px;
+    height: 24px;
+    border-radius: 12px;
+    background: $grey;
+    position: relative;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  label:before{
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: $white;
+    margin: 2px;
+    right: auto;
+    transition: all .2s;
+  }
+  label:after{
+    content: attr(data-off);
+    color: $white;
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    right: 0;
+    height: 22px;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+    transition: all .2s;
+  }
+}
+.rui-toggle[disabled=disabled] label{
+  cursor: not-allowed;
+}

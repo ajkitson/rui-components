@@ -22,7 +22,7 @@ angular.module('ruiComponents')
     ];
 
     $scope.removeTag = function (tag, tagIx) {
-      if (tagIx !== -1) {
+      if (tagIx >= 0 && tagIx < $scope.tags.length) {
         $scope.tags.splice(tagIx, 1);
       }
       // save change to server
@@ -48,6 +48,20 @@ angular.module('ruiComponents')
         color: randomColor()
       });
     };
+
+    // Toggle
+    $scope.toggle1 = false;
+    $scope.toggle2 = 'on';
+
+    $scope.toggleCount = 0;
+
+    $scope.incrementToggleCount = function () {
+      $scope.toggleCount++;
+    };
+
+    $scope.logToggle = function () {
+      console.log($scope.toggleTestForm);
+    }
 
   }]);
 
@@ -99,8 +113,27 @@ app.directive('ruiChip', [function () {
     templateUrl: 'templates/chip.html',
     scope: {
       name: '=',
-      color: '=',
+      backgroundColor: '=color',
       onRemove: '&',
+    },
+    link: function (scope, element, attrs) {
+      scope.style = {
+        'background-color': scope.backgroundColor
+      };
+
+      // adjust text color depending on background brightness
+      if (window.tinycolor) {
+        var dark = 'black', light = 'white';
+        var isDark = window.tinycolor(scope.backgroundColor).isDark();
+
+        scope.style.color = isDark ? light : dark;
+
+        // also make sure closing button (X) matches
+        scope.closeStyle = {
+          color: scope.style.color,
+          'text-shadow': '0 1px 0 ' + (isDark ? dark : light)
+        };
+      }
     }
   };
 }]);
@@ -124,6 +157,56 @@ app.directive('ruiHelptext', ['$compile', function ($compile) {
 }]);
 
 
+var app = angular.module('ruiComponents');
+
+app.directive('ruiToggle', ['$compile' ,function ($compile) {
+
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+
+      // Wrap input in span and associate with label
+      var $input = element;
+      $input.wrap(angular.element('<span class="rui-toggle">'));
+
+      var $wrapper = $input.parent(); // must save $wrapper after $input wrapped
+
+      var $label = angular.element('<label>');
+      $wrapper.append($label);
+
+      // Update attributes
+      if (attrs.type !== 'checkbox') {
+        // cannot dynamically change input type so log an error
+        console.error('<input> must be of type "checkbox" to use rui-toggle');
+      }
+
+      if (attrs.id) {
+        $label.attr('for', attrs.id);
+      } else {
+        console.error('<input> must have id attribute to use rui-toggle');
+      }
+
+      // move on and off text to label
+      if (attrs.onText) {
+        $label.attr('data-on', attrs.onText);
+        $input.removeAttr('on-text');
+      }
+
+      if (attrs.offText) {
+        $label.attr('data-off', attrs.offText);
+        $input.removeAttr('off-text');
+      }
+
+      // move disabled flag to span so cursor displays correctly
+      if (attrs.ngDisabled) {
+        $wrapper.attr('ng-disabled', attrs.ngDisabled);
+      }
+
+      $input.removeAttr('rui-toggle'); // prevent infinite recursion
+      $compile($wrapper)(scope);
+    }
+  };
+}]);
 angular.module('ruiComponents').run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -143,6 +226,7 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "    <br>\n" +
     "    <label rui-helptext data=\"helptextdata\" style=\"font-size:40px;\">Chaa</label>\n" +
     "\t</div>\n" +
+    "  <h2>Alerts</h2>\n" +
     "  <button ng-click=\"toggleAlert()\">Toggle Alert</button>\n" +
     "  <rui-alert message=\"alert.message\"></rui-alert>\n" +
     "  <div ng-repeat=\"type in ['info', 'warning', 'danger', 'success']\">\n" +
@@ -152,6 +236,7 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "               show-contact=\"true\">\n" +
     "    </rui-alert>\n" +
     "  </div>\n" +
+    "  <h2>Tags</h2>\n" +
     "  <button ng-click=\"addTag()\">Add Tag</button>\n" +
     "  <div>\n" +
     "    <rui-chip ng-repeat=\"tag in tags\"\n" +
@@ -160,6 +245,41 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "              on-remove=\"removeTag(tag, $index)\">\n" +
     "    </rui-chip>\n" +
     "  </div>\n" +
+    "  <h2>Toggles</h2>\n" +
+    "  <form name=\"toggleTestForm\" ng-submit=\"logToggle()\" novalidate>\n" +
+    "    <div>\n" +
+    "      <label>Disable next toggle?</label>\n" +
+    "      <input rui-toggle\n" +
+    "             type=\"checkbox\"\n" +
+    "             id=\"toggle1\"\n" +
+    "             name=\"toggle1\"\n" +
+    "             ng-model=\"toggle1\"\n" +
+    "             ng-change=\"incrementToggleCount()\"\n" +
+    "             />\n" +
+    "      Toggle1: {{toggle1}}\n" +
+    "\n" +
+    "    </div>\n" +
+    "    <div>\n" +
+    "      <label>Test toggle 2: </label>\n" +
+    "      <input rui-toggle\n" +
+    "             type=\"checkbox\"\n" +
+    "             id=\"toggle2\"\n" +
+    "             name=\"toggle2\"\n" +
+    "             ng-model=\"toggle2\"\n" +
+    "             on-text=\"on\"\n" +
+    "             off-text=\"off\"\n" +
+    "             ng-disabled=\"toggle1\"\n" +
+    "             ng-true-value=\"'on'\"\n" +
+    "             ng-false-value=\"'off'\"\n" +
+    "             ng-change=\"incrementToggleCount()\"\n" +
+    "             />\n" +
+    "      Toggle2: {{toggle2}}\n" +
+    "    </div>\n" +
+    "    Overall count: {{toggleCount}}\n" +
+    "    <input type=\"submit\" value=\"submit\"/>\n" +
+    "\n" +
+    "  </form>\n" +
+    "\n" +
     "</div>\n"
   );
 
@@ -189,10 +309,10 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('templates/chip.html',
-    "<div class=\"rui-chip\" ng-style=\"{'background-color':'{{color}}'}\">\n" +
+    "<div class=\"rui-chip\" ng-style=\"style\">\n" +
     "  <span>{{name}}</span>\n" +
     "  <button type=\"button\" class=\"rui-close\" aria-label=\"Remove Tag\" ng-click=\"onRemove()\">\n" +
-    "    <span aria-hidden=\"true\">&times;</span>\n" +
+    "    <span aria-hidden=\"true\" ng-style=\"closeStyle\">&times;</span>\n" +
     "  </button>\n" +
     "</div>\n"
   );

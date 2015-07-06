@@ -49,4 +49,18 @@ angular.module('ruiComponents')
       });
     };
 
+    // Toggle
+    $scope.toggle1 = false;
+    $scope.toggle2 = 'on';
+
+    $scope.toggleCount = 0;
+
+    $scope.incrementToggleCount = function () {
+      $scope.toggleCount++;
+    };
+
+    $scope.logToggle = function () {
+      console.log($scope.toggleTestForm);
+    }
+
   }]);
