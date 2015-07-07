@@ -61,6 +61,21 @@ angular.module('ruiComponents')
 
     $scope.logToggle = function () {
       console.log($scope.toggleTestForm);
-    }
+    };
+
+    // Spinner
+    $scope.showInlineSpinner = true;
+    $scope.showFullScreenSpinner = false;
+    $scope.spinnerText = "great big spinner";
+
+    $scope.glimpseFullScreenSpinner = function () {
+      $scope.showFullScreenSpinner = true;
+
+      // since spinner blocks the toggle button, must detoggle programatically
+      setTimeout(function () {
+        $scope.showFullScreenSpinner = false;
+        $scope.$apply();
+      }, 3000);
+    };
 
   }]);

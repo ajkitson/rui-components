@@ -64,7 +64,16 @@
     </div>
     Overall count: {{toggleCount}}
     <input type="submit" value="submit"/>
-
   </form>
+
+  <h2>Spinner</h2>
+  <div>
+    <rui-fullscreen-spinner text="spinnerText" top="30px" left="90px" ng-show="showFullScreenSpinner"></rui-fullscreen-spinner>
+    <button ng-click="glimpseFullScreenSpinner()">show fullscreen spinner</button>
+  </div>
+  <div>
+    <rui-spinner ng-show="showInlineSpinner" fullscreen></rui-spinner>
+    <button ng-click="showInlineSpinner = !showInlineSpinner">toggle inline spinner</button>
+  </div>
 
 </div>

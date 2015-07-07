@@ -1,0 +1,16 @@
+.rui-fullscreen {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
+  z-index: 199999;
+  background-color: $verylightgrey;
+}
+
+.rui-fullscreen-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

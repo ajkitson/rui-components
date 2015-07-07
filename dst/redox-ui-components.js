@@ -61,7 +61,22 @@ angular.module('ruiComponents')
 
     $scope.logToggle = function () {
       console.log($scope.toggleTestForm);
-    }
+    };
+
+    // Spinner
+    $scope.showInlineSpinner = true;
+    $scope.showFullScreenSpinner = false;
+    $scope.spinnerText = "great big spinner";
+
+    $scope.glimpseFullScreenSpinner = function () {
+      $scope.showFullScreenSpinner = true;
+
+      // since spinner blocks the toggle button, must detoggle programatically
+      setTimeout(function () {
+        $scope.showFullScreenSpinner = false;
+        $scope.$apply();
+      }, 3000);
+    };
 
   }]);
 
@@ -139,6 +154,29 @@ app.directive('ruiChip', [function () {
 }]);
 var app = angular.module('ruiComponents');
 
+app.directive('ruiFullscreen', function () {
+
+  return {
+    restrict: 'A',
+    transclude: true,
+    replace: true,
+    templateUrl: 'templates/fullscreen.html',
+    scope: {
+      top: '@top',
+      left: '@left'
+    },
+    link: function (scope, element, attrs) {
+      scope.position = {
+        height: 'calc(100%' + (attrs.top ? (' - ' + attrs.top) : '')  + ')',
+        width: 'calc(100%' + (attrs.left ? (' - ' + attrs.left) : '') + ')',
+        top: attrs.top || 0,
+        left: attrs.left || 0
+      };
+    }
+  };
+});
+var app = angular.module('ruiComponents');
+
 app.directive('ruiHelptext', ['$compile', function ($compile) {
 	return {
 		restrict: 'A',
@@ -156,6 +194,31 @@ app.directive('ruiHelptext', ['$compile', function ($compile) {
 	};
 }]);
 
+
+var app = angular.module('ruiComponents');
+
+app.directive('ruiFullscreenSpinner', function () {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/spinner-fullscreen.html',
+    scope: {
+      text: '=',
+      top: '@',
+      left: '@'
+    }
+  };
+});
+// Show/hide spinner
+var app = angular.module('ruiComponents');
+
+app.directive('ruiSpinner', function () {
+
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/spinner.html'
+  };
+
+});
 
 var app = angular.module('ruiComponents');
 
@@ -277,8 +340,17 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "    </div>\n" +
     "    Overall count: {{toggleCount}}\n" +
     "    <input type=\"submit\" value=\"submit\"/>\n" +
-    "\n" +
     "  </form>\n" +
+    "\n" +
+    "  <h2>Spinner</h2>\n" +
+    "  <div>\n" +
+    "    <rui-fullscreen-spinner text=\"spinnerText\" top=\"30px\" left=\"90px\" ng-show=\"showFullScreenSpinner\"></rui-fullscreen-spinner>\n" +
+    "    <button ng-click=\"glimpseFullScreenSpinner()\">show fullscreen spinner</button>\n" +
+    "  </div>\n" +
+    "  <div>\n" +
+    "    <rui-spinner ng-show=\"showInlineSpinner\" fullscreen></rui-spinner>\n" +
+    "    <button ng-click=\"showInlineSpinner = !showInlineSpinner\">toggle inline spinner</button>\n" +
+    "  </div>\n" +
     "\n" +
     "</div>\n"
   );
@@ -318,6 +390,14 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
   );
 
 
+  $templateCache.put('templates/fullscreen.html',
+    "<div class=\"rui-fullscreen\" ng-style=\"position\">\n" +
+    "  <div class=\"rui-fullscreen-content\" ng-transclude>\n" +
+    "  </div>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('templates/helptext.html',
     "<div class=\"rui-helptext-container\">\n" +
     "  <span class=\"rui-helptext-icon ion-help-circled\" ng-mouseover=\"showtooltip=true\" ng-mouseleave=\"showtooltip=false\" ng-click=\"clicked=!clicked\" >\n" +
@@ -330,6 +410,148 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
 
   $templateCache.put('templates/select.html',
     ""
+  );
+
+
+  $templateCache.put('templates/spinner-fullscreen.html',
+    "<div rui-fullscreen top=\"{{top}}\" left=\"{{left}}\">\n" +
+    "  <rui-spinner></rui-spinner>\n" +
+    "  <h3 ng-if=\"text\">{{text}}</h3>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('templates/spinner.html',
+    "<svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"60px\" height=\"60px\"\n" +
+    "   viewBox=\"0 0 60 60\" enable-background=\"new 0 0 60 60\" xml:space=\"preserve\">\n" +
+    "  <g>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c0\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;0 30 30;360 30 30\"\n" +
+    "       begin=\"0s\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c1\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;30 30 30;360 30 30\"\n" +
+    "       begin=\"0s\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c2\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;60 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       begin=\"0s\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c3\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;90 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       begin=\"0s\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c4\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;120 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       begin=\"0s\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c5\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;150 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c6\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;180 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c7\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;210 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c8\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;240 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c9\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;270 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c10\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;300 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "    <polygon fill=\"#00B288\" points=\"33,3.6 27.6,0.1 26.9,0.1 26.9,3.5 30.2,5.5 26.9,7.4 26.9,10.8 27.6,10.8 33,7.3  \">\n" +
+    "\n" +
+    "    <animateTransform id=\"c11\" attributeName=\"transform\"\n" +
+    "       attributeType=\"XML\"\n" +
+    "       type=\"rotate\"\n" +
+    "       values=\"0 30 30;330 30 30;360 30 30\"\n" +
+    "       dur=\"1500ms\"\n" +
+    "       repeatCount=\"indefinite\" />\n" +
+    "\n" +
+    "    </polygon>\n" +
+    "  </g>\n" +
+    "</svg>\n"
   );
 
 }]);
