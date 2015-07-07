@@ -1,7 +1,18 @@
-angular.module('ruiComponents', []);
+angular.module('ruiComponents', ['mgcrea.ngStrap']);
 
 angular.module('ruiComponents')
   .controller('ruiAppController', ['$scope', function($scope){
+
+    // Buttons
+    $scope.buttonClickedCnt = 0;
+    $scope.buttonClicked = function (msg) {
+      $scope.buttonClickedCnt++;
+      console.log('clicked! ', msg, $scope.buttonClickedCnt);
+    };
+
+    $scope.dropdownOptions = [ 'abc', 'def', 'ghi', 'jkl'];
+    $scope.dropdownSelection = $scope.dropdownOptions[1];
+
 
     // Help Text
     $scope.helptextdata="data from controller";

@@ -1,15 +1,63 @@
-button {
-	padding: 0.2 em;
+.rui-btn {
+  border-radius: 0px;
+  border-width: 1px;
+  padding: 6px 12px;
+  font-weight: bold;
+  &:hover {
+    border-width: 1px;
+  }
 }
 
-button.rui-btn-primary {
-	color: red;
+.rui-btn-default {
+  color: $black;
+  background-color: $white;
+  border-color: $lightgrey;
+  &:hover {
+    color: $white;
+    background-color: $green;
+    border-color: $green;
+  }
+  &:focus {
+    color: $white;
+    background-color: $green;
+    border-color: $green;
+  }
 }
 
-button.rui-btn-secondary {
-	color: blue;
+.rui-btn-primary {
+  background-color: $orange;
+  color: $lightgrey;
+  border-color: $lightorange;
+  &:hover{
+    background-color: $lightorange;
+    color: $orange;
+    border-color: $lightorange;
+  }
+  &:focus{
+    background-color: $lightorange;
+    color: $orange;
+    border-color: $lightorange;
+  }
+  &:disabled {
+    background-color: $darkgrey;
+    color: $grey;
+    border-color: $darkgrey;
+  }
 }
 
-button.rui-btn-default {
-	color: black;
+.rui-btn-secondary {
+  background-color: $darkgrey;
+  color: $white;
+  &:hover{
+    background-color: $darkgrey;
+    color: $green;
+  }
+  &:focus{
+    background-color: $darkgrey;
+    color: $green;
+  }
+  &:disabled{
+    background-color: $darkgrey;
+    color: $black;
+  }
 }

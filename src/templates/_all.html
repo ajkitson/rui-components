@@ -1,9 +1,35 @@
 <div ng-controller="ruiAppController">
   <div>
     <h2>Buttons</h2>
-    <rui-button primary="true" caption="Primary"></rui-button>
-    <rui-button secondary="true" caption="Secondary"></rui-button>
-    <rui-button caption="Default"></rui-button>
+    <p>Clicks: {{buttonClickedCnt}}</p>
+    <h3>Primary, Secondary, Default</h3>
+    <rui-button primary ng-click="buttonClicked()">Primary</rui-button>
+    <rui-button secondary ng-click="buttonClicked()">Secondary</rui-button>
+    <rui-button ng-click="buttonClicked()">Default</rui-button>
+    <h3>Disabled</h3>
+    <p>These buttons are disabled when the click count is even</p>
+    <rui-button primary
+                ng-click="buttonClicked()"
+                ng-disabled="buttonClickedCnt % 2 === 0">
+      Primary
+    </rui-button>
+    <rui-button secondary
+                ng-click="buttonClicked()"
+                ng-disabled="buttonClickedCnt % 2 === 0">
+      Secondary
+    </rui-button>
+    <rui-button ng-click="buttonClicked()"
+                ng-disabled="buttonClickedCnt % 2 === 0">
+      Default
+    </rui-button>
+    <h3>Dropdowns</h3>
+    <rui-button type="button" class="context-button" ng-model="dropdownSelection"
+      bs-options="option as option for option in dropdownOptions"
+      bs-select>
+      Dropdown <span class="caret"></span>
+    </rui-button>
+    <p>Selected: {{dropdownSelection}}</p>
+
   </div>
 	<div>
 		<h2>Help Text</h2>

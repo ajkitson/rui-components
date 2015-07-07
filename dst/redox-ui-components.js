@@ -1,7 +1,18 @@
-angular.module('ruiComponents', []);
+angular.module('ruiComponents', ['mgcrea.ngStrap']);
 
 angular.module('ruiComponents')
   .controller('ruiAppController', ['$scope', function($scope){
+
+    // Buttons
+    $scope.buttonClickedCnt = 0;
+    $scope.buttonClicked = function (msg) {
+      $scope.buttonClickedCnt++;
+      console.log('clicked! ', msg, $scope.buttonClickedCnt);
+    };
+
+    $scope.dropdownOptions = [ 'abc', 'def', 'ghi', 'jkl'];
+    $scope.dropdownSelection = $scope.dropdownOptions[1];
+
 
     // Help Text
     $scope.helptextdata="data from controller";
@@ -107,14 +118,20 @@ app.directive('ruiComponents', function () {
 var app = angular.module('ruiComponents');
 
 app.directive('ruiButton', function () {
+
 	return {
 		restrict: 'E',
 		templateUrl: 'templates/button.html',
 		replace: true,
-		scope: {
-      primary: '@',
-      secondary: '@',
-      caption: '@'
+    transclude: true,
+    scope: {},
+    link: function (scope, element, attrs) {
+      // allow presence of attribute to flag as primary, etc.
+      ['primary', 'secondary', 'default'].forEach(function (level) {
+        if (attrs.hasOwnProperty(level)) {
+          scope[level] = attrs[level] !== 'false'; // respect primary="false"
+        }
+      });
     }
 	};
 });
@@ -277,9 +294,35 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
     "<div ng-controller=\"ruiAppController\">\n" +
     "  <div>\n" +
     "    <h2>Buttons</h2>\n" +
-    "    <rui-button primary=\"true\" caption=\"Primary\"></rui-button>\n" +
-    "    <rui-button secondary=\"true\" caption=\"Secondary\"></rui-button>\n" +
-    "    <rui-button caption=\"Default\"></rui-button>\n" +
+    "    <p>Clicks: {{buttonClickedCnt}}</p>\n" +
+    "    <h3>Primary, Secondary, Default</h3>\n" +
+    "    <rui-button primary ng-click=\"buttonClicked()\">Primary</rui-button>\n" +
+    "    <rui-button secondary ng-click=\"buttonClicked()\">Secondary</rui-button>\n" +
+    "    <rui-button ng-click=\"buttonClicked()\">Default</rui-button>\n" +
+    "    <h3>Disabled</h3>\n" +
+    "    <p>These buttons are disabled when the click count is even</p>\n" +
+    "    <rui-button primary\n" +
+    "                ng-click=\"buttonClicked()\"\n" +
+    "                ng-disabled=\"buttonClickedCnt % 2 === 0\">\n" +
+    "      Primary\n" +
+    "    </rui-button>\n" +
+    "    <rui-button secondary\n" +
+    "                ng-click=\"buttonClicked()\"\n" +
+    "                ng-disabled=\"buttonClickedCnt % 2 === 0\">\n" +
+    "      Secondary\n" +
+    "    </rui-button>\n" +
+    "    <rui-button ng-click=\"buttonClicked()\"\n" +
+    "                ng-disabled=\"buttonClickedCnt % 2 === 0\">\n" +
+    "      Default\n" +
+    "    </rui-button>\n" +
+    "    <h3>Dropdowns</h3>\n" +
+    "    <rui-button type=\"button\" class=\"context-button\" ng-model=\"dropdownSelection\"\n" +
+    "      bs-options=\"option as option for option in dropdownOptions\"\n" +
+    "      bs-select>\n" +
+    "      Dropdown <span class=\"caret\"></span>\n" +
+    "    </rui-button>\n" +
+    "    <p>Selected: {{dropdownSelection}}</p>\n" +
+    "\n" +
     "  </div>\n" +
     "\t<div>\n" +
     "\t\t<h2>Help Text</h2>\n" +
@@ -368,9 +411,10 @@ angular.module('ruiComponents').run(['$templateCache', function($templateCache) 
 
 
   $templateCache.put('templates/button.html',
-    "<button \n" +
-    "\tng-class=\"primary ? 'rui-btn-primary' : (secondary) ? 'rui-btn-secondary' : 'rui-btn-default'\">\n" +
-    "\t{{caption}}\n" +
+    "<button\n" +
+    "  class=\"btn rui-btn\"\n" +
+    "\tng-class=\"primary ? 'rui-btn-primary' : (secondary ? 'rui-btn-secondary' : 'rui-btn-default')\"\n" +
+    "  ng-transclude>\n" +
     "</button>"
   );
 
