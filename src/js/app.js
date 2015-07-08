@@ -4,10 +4,9 @@ angular.module('ruiComponents')
   .controller('ruiAppController', ['$scope', function($scope){
 
     // Buttons
-    $scope.buttonClickedCnt = 0;
-    $scope.buttonClicked = function (msg) {
-      $scope.buttonClickedCnt++;
-      console.log('clicked! ', msg, $scope.buttonClickedCnt);
+    $scope.clickCnt = 0;
+    $scope.incrementClickCnt = function (msg) {
+      $scope.clickCnt++;
     };
 
     $scope.dropdownOptions = [ 'abc', 'def', 'ghi', 'jkl'];
@@ -24,6 +23,7 @@ angular.module('ruiComponents')
         ? null
         : { title: 'OMG', message: 'tragic alert ' + counter++ };
     };
+    $scope.toggleAlert();
 
     // Chips
     $scope.tags = [
